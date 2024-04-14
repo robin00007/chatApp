@@ -1,6 +1,29 @@
 import { useContext, useState } from "react";
 import { socket } from "../routes/login";
 import { LoginContext } from "../utils/contextProvider";
+import {
+  Avatar,
+  Box,
+  Button,
+  Paper,
+  Stack,
+  Typography,
+  styled,
+} from "@mui/material";
+const StyledBox = styled(Box)(({ theme }) => {
+  return {
+    display: "flex",
+    padding: "10px 0px",
+    width: "100%",
+    alignItems: "center",
+    boxShadow: "none",
+  };
+});
+const StyledAvatar = styled(Avatar)(({ theme }) => {
+  return {
+    marginRight: "1rem",
+  };
+});
 const ChatBox = ({ user }) => {
   const [chat, setChat] = useState("");
   const [chatList, setChatList] = useState([]);
@@ -22,28 +45,24 @@ const ChatBox = ({ user }) => {
       setChat("");
     }
   };
+  console.log(user);
 
   return (
-    <div
-      style={{
-        border: "2px solid black",
-        margin: "10px",
-        padding: "10px",
-      }}
-    >
-      <h3>{user.name}</h3>
-      <p>{user.email}</p>
-      <input
+    <StyledBox>
+      <StyledAvatar src={user.picture}>W</StyledAvatar>
+      <Typography variant={"h6"}>{user.name}</Typography>
+      {/* <p>{user.email}</p> */}
+      {/* <input
         value={chat}
         onChange={(e) => {
           setChat(e.target.value);
         }}
         onKeyDown={hanldePressEnter}
-      />
+      /> */}
       {chatList.map((chat, index) => {
         return <p key={index}>{chat}</p>;
       })}
-    </div>
+    </StyledBox>
   );
 };
 export default ChatBox;
