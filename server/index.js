@@ -36,5 +36,5 @@ app.get("/api/users", userRoute);
 await connectDb();
 
 //socket connection ///////////////
-export const activeUsers = {};
+
 socketServer();

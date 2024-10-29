@@ -4,7 +4,8 @@ import { createServer } from "http";
 import "dotenv/config";
 import { app } from "./index.js";
 import { addUser } from "./query/addUsers.js";
-import { activeUsers } from "./index.js";
+
+let activeUsers = {};
 const socketServer = () => {
   const server = createServer(app);
 
@@ -21,16 +22,16 @@ const socketServer = () => {
       const { name, email, picture, ...rest } = data;
       addUser({ name, email, picture });
       activeUsers[name] = socket.id;
+      console.log("Active Users ", activeUsers);
     });
     socket.on("chat", ({ user, chat, owner }) => {
       const socketId = activeUsers[user.name];
-      console.log(activeUsers);
       if (socketId) {
         console.log(socketId);
         io.to(socketId).emit("recieve message", {
-          name: user.name,
+          name: owner,
           chat: chat,
-          owner: owner,
+          owner: user.name,
         });
       }
     });
@@ -39,6 +40,8 @@ const socketServer = () => {
     });
   });
 
-  io.listen(process.env.SOCKET_PORT);
+  io.listen(process.env.SOCKET_PORT, () => {
+    console.log("socket port is listening on ", process.env.SOCKET_PORT);
+  });
 };
 export default socketServer;

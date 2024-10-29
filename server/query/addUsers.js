@@ -8,7 +8,6 @@ const addUser = async ({ name, email, picture }) => {
   try {
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
-      console.log("User already exists");
       console.log("User already exists:", existingUser.name);
     } else {
       user
